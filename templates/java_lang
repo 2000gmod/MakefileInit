@@ -4,7 +4,7 @@ CLASSDIR = %s
 
 MAINPACKAGE = %s
 MAINCLASS = %s
-ARGS = 
+MAINARGS = 
 OUT_FILE = $(MAINCLASS)_output.txt
 
 PREFIX = [make]:
@@ -41,7 +41,7 @@ endif
 
 run: compile
 	@printf "$(PREFIX) Running target: $(TARGET)\n\n"
-	@$(JVM) -cp ./$(OUTDIR) $(MAINPACKAGE).$(MAINCLASS) $(ARGS)
+	@$(JVM) -cp ./$(OUTDIR) $(MAINPACKAGE).$(MAINCLASS) $(MAINARGS)
 
 runToFile: compile 
-	$(JVM) -cp ./$(OUTDIR) $(MAINPACKAGE).$(MAINCLASS) $(ARGS) $(OUT)
+	$(JVM) -cp ./$(OUTDIR) $(MAINPACKAGE).$(MAINCLASS) $(MAINARGS) $(OUT)

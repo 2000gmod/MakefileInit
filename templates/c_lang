@@ -7,6 +7,8 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Wpedantic -MMD
 MEMPROFILER = valgrind
 
+MAINARGS = 
+
 OBJDIR = %s
 SRCDIR = %s
 
@@ -57,12 +59,12 @@ $(OBJDIR):
 
 run: $(TARGET)
 	@printf "$(PREFIX) Running target: $(TARGET)\n\n"
-	@$(TARGET)
+	@$(TARGET) $(MAINARGS)
 
 runToFile: $(TARGET)
 	@printf "$(PREFIX) Running target: $(TARGET)\n"
 	@printf "$(PREFIX) Redirecting stdout to: $(OUT_FILE)\n\n"
-	@$(TARGET) $(OUT)
+	@$(TARGET) $(MAINARGS) $(OUT)
 	
 clean:
 	@printf "$(PREFIX) Deleting output directory..."
