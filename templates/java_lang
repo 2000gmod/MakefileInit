@@ -1,0 +1,47 @@
+SOURCEDIR = %s
+OUTDIR = %s
+CLASSDIR = %s
+
+MAINPACKAGE = %s
+MAINCLASS = %s
+ARGS = 
+OUT_FILE = $(MAINCLASS)_output.txt
+
+PREFIX = [make]:
+DONE = Done\n
+
+MAINFILE = $(SOURCEDIR)/$(subst .,/,$(MAINPACKAGE))/$(MAINCLASS).java
+COMP = javac
+JVM = java
+OUT = > $(OUT_FILE)
+MAINOUT := $(subst .java,.class, $(subst $(SOURCEDIR),$(OUTDIR),$(MAINFILE)))
+
+.PHONY: default compile clean run runToFile
+
+default : compile
+
+compile: $(MAINOUT)
+
+$(OUTDIR)/%%.class: $(SOURCEDIR)/%%.java | $(OUTDIR)
+	@printf "$(PREFIX) Compiling $<..."
+	@$(COMP) -d $(OUTDIR) -classpath $(CLASSDIR) -sourcepath $(SOURCEDIR) $(MAINFILE)
+	@printf " $(DONE)"
+
+$(OUTDIR):
+	@printf "$(PREFIX) Creating output directory..."
+	@mkdir -p $@
+	@printf " $(DONE)"
+
+clean:
+ifndef OUTDIR
+	$(error Empty output path.)
+endif
+	rm -rf ./$(OUTDIR)/*
+	rm -f $(OUT_FILE)
+
+run: compile
+	@printf "$(PREFIX) Running target: $(TARGET)\n\n"
+	@$(JVM) -cp ./$(OUTDIR) $(MAINPACKAGE).$(MAINCLASS) $(ARGS)
+
+runToFile: compile 
+	$(JVM) -cp ./$(OUTDIR) $(MAINPACKAGE).$(MAINCLASS) $(ARGS) $(OUT)
